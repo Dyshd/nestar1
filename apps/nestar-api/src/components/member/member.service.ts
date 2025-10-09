@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class MemberService {
-    constructor(@InjectModel("Member") private readonly memberModel: Model<null>){}
+    constructor(@InjectModel("Member") private readonly memberModel: Model<null>) { }
     public async signup(): Promise<string> {
         return 'Signup executed'
     }
@@ -21,4 +21,3 @@ export class MemberService {
         return 'getMember executed'
     }
 }
- 
