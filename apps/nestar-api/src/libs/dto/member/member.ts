@@ -4,6 +4,84 @@ import { MemberAuthType, MemberStatus, MemberType } from "../../enums/member.enu
 
 
 
+// @ObjectType()
+// export class Member {
+//     @Field(() => String)
+//     _id: ObjectId;
+
+//     @Field(() => MemberType)
+//     memberType: MemberType;
+
+
+//     @Field(() => MemberStatus)
+//     memberStatus: MemberStatus;
+
+//     @Field(() => MemberAuthType)
+//     memberAuthType: MemberAuthType;
+
+//     @Field(() => String)
+//     memberPhone: string;
+
+//     @Field(() => String)
+//     memberNick: string;
+
+//     memberPassword?: string;
+
+//     @Field(() => String, { nullable: true })
+//     memberFullName?: string;
+
+//     @Field(() => String)
+//     memberImage?: string;
+
+//     @Field(() => String, { nullable: true })
+//     memberAddress?: string;
+
+//     @Field(() => String, { nullable: true })
+//     memberDesc?: string;
+
+//     @Field(()=> Int)
+//     memberProperties: number;
+
+//      @Field(()=> Int)
+//     memberFollowers: number;
+
+//      @Field(()=> Int)
+//     memberFollowings: number;
+
+//      @Field(()=> Int)
+//     memberPoints: number;
+
+//      @Field(()=> Int)
+//     memberLikes: number;
+
+//      @Field(()=> Int)
+//     memberViews: number;
+
+//      @Field(()=> Int)
+//     memberComments: number;
+
+//      @Field(()=> Int)
+//     memberRank: number;
+
+//      @Field(()=> Int)
+//     memberWarnings: number;
+
+//      @Field(()=> Int)
+//     memberBlocks: number;
+
+//      @Field(()=> Date, {nullable: true})
+//     deletedAt?: Date;
+
+    
+//      @Field(()=> Date)
+//     createdAt?: Date;
+
+     
+//      @Field(()=> Date)
+//     updateAt?: Date;
+// }
+
+
 @ObjectType()
 export class Member {
     @Field(() => String)
@@ -11,7 +89,6 @@ export class Member {
 
     @Field(() => MemberType)
     memberType: MemberType;
-
 
     @Field(() => MemberStatus)
     memberStatus: MemberStatus;
@@ -30,7 +107,7 @@ export class Member {
     @Field(() => String, { nullable: true })
     memberFullName?: string;
 
-    @Field(() => String)
+    @Field(() => String, { nullable: true })
     memberImage?: string;
 
     @Field(() => String, { nullable: true })
@@ -39,44 +116,42 @@ export class Member {
     @Field(() => String, { nullable: true })
     memberDesc?: string;
 
-    @Field(()=> Int)
+    @Field(() => Int)
     memberProperties: number;
 
-     @Field(()=> Int)
+    @Field(() => Int)
     memberFollowers: number;
 
-     @Field(()=> Int)
+    @Field(() => Int)
     memberFollowings: number;
 
-     @Field(()=> Int)
+    @Field(() => Int)
     memberPoints: number;
 
-     @Field(()=> Int)
+    @Field(() => Int)
     memberLikes: number;
 
-     @Field(()=> Int)
+    @Field(() => Int)
     memberViews: number;
 
-     @Field(()=> Int)
+    @Field(() => Int)
     memberComments: number;
 
-     @Field(()=> Int)
+    @Field(() => Int)
     memberRank: number;
 
-     @Field(()=> Int)
+    @Field(() => Int)
     memberWarnings: number;
 
-     @Field(()=> Int)
+    @Field(() => Int)
     memberBlocks: number;
 
-     @Field(()=> Date, {nullable: true})
+    @Field(() => Date, { nullable: true })
     deletedAt?: Date;
 
-    
-     @Field(()=> Date)
+    @Field(() => Date, { nullable: true })
     createdAt?: Date;
 
-     
-     @Field(()=> Date)
+    @Field(() => Date, { nullable: true })
     updateAt?: Date;
 }
