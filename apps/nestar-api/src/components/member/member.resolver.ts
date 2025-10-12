@@ -9,7 +9,7 @@ export class MemberResolver {
     constructor(private readonly memberService: MemberService) { }
 
     @Mutation(() => Member)
-    @UsePipes(ValidationPipe)
+    // @UsePipes(ValidationPipe)
     public async signup(@Args("input") input: MemberInput): Promise<Member> {
         try {
             console.log("MUTATION SIGNUP")
@@ -22,7 +22,7 @@ export class MemberResolver {
     }
 
     @Mutation(() => Member)
-    @UsePipes(ValidationPipe)
+    // @UsePipes(ValidationPipe)
     public async login(@Args("input") input: LoginInput): Promise<Member> {
         try {
             console.log("MUTATION LOGIN")
