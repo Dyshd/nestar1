@@ -102,7 +102,8 @@ export class Member {
     @Field(() => String)
     memberNick: string;
 
-    memberPassword?: string;
+    // memberPassworddan ? ni ushirib tashladim xato berdi memberServiceda 
+    memberPassword: string; 
 
     @Field(() => String, { nullable: true })
     memberFullName?: string;
