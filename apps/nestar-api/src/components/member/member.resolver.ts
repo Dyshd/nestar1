@@ -15,14 +15,13 @@ export class MemberResolver {
     }
 
     @Mutation(() => Member)
-    // @UsePipes(ValidationPipe)
     public async login(@Args("input") input: LoginInput): Promise<Member> {
             console.log("MUTATION LOGIN")
             return this.memberService.login(input);
         }
 
     
-
+        //Authenticated
     @Mutation(() => String)
     public async updateMember(): Promise<string> {
         console.log("MUTATION updateMember")
@@ -33,4 +32,20 @@ export class MemberResolver {
         console.log("MUTATION getMember")
         return this.memberService.getMember();
     }
+
+    /** ADMIN **/
+
+// Authorization: ADMIN
+@Mutation(() => String)
+public async getAllMembersByAdmin(): Promise<string> {
+  return this.memberService.getAllMembersByAdmin();
+}
+
+// Authorization: ADMIN
+@Mutation(() => String)
+public async updateMemberByAdmin(): Promise<string> {
+  console.log('Mutation: updateMemberByAdmin');
+  return this.memberService.updateMemberByAdmin();
+}
+
 }
