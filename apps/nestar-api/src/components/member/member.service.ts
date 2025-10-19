@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, Search } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { Member } from '../../libs/dto/member/member';
@@ -8,6 +8,9 @@ import { Message } from '../../libs/enums/common.enum';
 import { MESSAGES } from '@nestjs/core/constants';
 import { AuthService } from '../auth/auth.service';
 import { MemberUpdate } from '../../libs/dto/member/member.update';
+import { MemberModule } from './member.module';
+import { T } from '../../libs/types/common';
+import { InitializeOnPreviewAllowlist } from '@nestjs/core';
 
 @Injectable()
 export class MemberService {
@@ -62,8 +65,16 @@ export class MemberService {
 
 
 
-    public async getMember(): Promise<string> {
-        return 'getMember executed'
+    public async getMember(targetId): Promise<Member> {
+        const search: T = {
+            _id: targetId,
+            memberStatus: {
+                $in: [MemberStatus.ACTIVE, MemberStatus.BLOCK], 
+            },
+        };
+        const targetMember = await this.memberModel.findOne(search).exec();
+        if(!targetMember) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+        return targetMember;
     }
 
 
