@@ -1,12 +1,13 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { Member } from '../../libs/dto/member/member';
 import { LoginInput, MemberInput } from '../../libs/dto/member/member.input';
 import { MemberStatus } from '../../libs/enums/member.enum';
 import { Message } from '../../libs/enums/common.enum';
 import { MESSAGES } from '@nestjs/core/constants';
 import { AuthService } from '../auth/auth.service';
+import { MemberUpdate } from '../../libs/dto/member/member.update';
 
 @Injectable()
 export class MemberService {
@@ -16,7 +17,7 @@ export class MemberService {
 
         try {
             const result = await this.memberModel.create(input);
-             result.accessToken = await this.authService.createToken(result);
+            result.accessToken = await this.authService.createToken(result);
             return result;
         } catch (err) {
             console.log("Error, Service.model:", err.message);
@@ -47,20 +48,30 @@ export class MemberService {
         return response;
     }
 
-    public async updateMember(): Promise<string> {
-        return 'updateMember executed'
+    public async updateMember(memberId: ObjectId, input: MemberUpdate): Promise<Member> {
+        const result: Member | null = await this.memberModel.findOneAndUpdate({
+            _id: memberId,
+            memberStatus: MemberStatus.ACTIVE
+        }, input,
+    {new: true},).exec();
+    if(!result) throw new InternalServerErrorException(Message.UPDATE_FAILED)
+        result.accessToken = await this.authService.createToken(result)
+
+        return result
     }
+
+
 
     public async getMember(): Promise<string> {
         return 'getMember executed'
     }
 
-    
+
     public async getAllMembersByAdmin(): Promise<string> {
         return 'getAllMembersByAdmin executed'
     }
 
-    
+
     public async updateMemberByAdmin(): Promise<string> {
         return 'updateMemberByAdmin executed'
     }
