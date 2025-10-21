@@ -72,11 +72,11 @@ import { MemberAuthType, MemberStatus, MemberType } from "../../enums/member.enu
 //      @Field(()=> Date, {nullable: true})
 //     deletedAt?: Date;
 
-    
+
 //      @Field(()=> Date)
 //     createdAt?: Date;
 
-     
+
 //      @Field(()=> Date)
 //     updateAt?: Date;
 // }
@@ -103,7 +103,7 @@ export class Member {
     memberNick: string;
 
     // memberPassworddan ? ni ushirib tashladim xato berdi memberServiceda 
-    memberPassword: string; 
+    memberPassword: string;
 
     @Field(() => String, { nullable: true })
     memberFullName?: string;
@@ -156,6 +156,22 @@ export class Member {
     @Field(() => Date, { nullable: true })
     updateAt?: Date;
 
-    @Field(() => String, {nullable: true})
+    @Field(() => String, { nullable: true })
     accessToken?: string;
+}
+
+@ObjectType()
+export class TotalConter {
+    @Field(() => Int, { nullable: true })
+    total: number;
+}
+
+@ObjectType()
+export class Members {
+    @Field(() => [Member])
+    list: Member[];
+
+
+    @Field(() => [TotalConter], { nullable: true })
+    metaCounter: TotalConter[];
 }
