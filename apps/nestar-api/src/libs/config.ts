@@ -22,7 +22,7 @@ export const lookupMember = {
     $lookup: {
         from: 'members',
         localField: 'memberId',
-        foreigenField: '_id',
+        foreignField: '_id',
         as: 'memberData',
     }
 }
