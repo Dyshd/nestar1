@@ -1,7 +1,7 @@
 import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { PropertyService } from './property.service';
 import { Properties, Property } from '../../libs/dto/property/property';
-import { AgentPropertiesInquiry, PropertiesInquiry, PropertyInput } from '../../libs/dto/property/property.input';
+import { AgentPropertiesInquiry, AllPropertiesInquiry, PropertiesInquiry, PropertyInput } from '../../libs/dto/property/property.input';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { MemberType } from '../../libs/enums/member.enum';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -73,6 +73,19 @@ export class PropertyResolver {
     ): Promise<Properties> {
         console.log('Query: getAgentProperties');
         return await this.propertyService.getAgentProperties(memberId, input);
+    }
+
+    // Admin
+
+    @Roles(MemberType.ADMIN)
+    @UseGuards(RolesGuard)
+    @Query((returns) => Properties)
+    public async getAllPropertiesByAdmin(
+        @Args('input') input: AllPropertiesInquiry,
+        @AuthMember('_id') memberId: mongoose.ObjectId,
+    ): Promise<Properties> {
+        console.log('Query: getAllPropertiesByAdmin');
+        return await this.propertyService.getAllPropertiesByAdmin(memberId, input);
     }
 
 
