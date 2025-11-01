@@ -5,6 +5,8 @@ export const availableMemberSorts = ['createdAt', 'updatedAt', 'memberLikes', 'm
 
 export const availableOptions = ['propertyBarter', "propertyRent"];
 export const availablePropertySorts = ['createdAt', 'updatedAt', 'memberLikes', 'memberViews', 'propertyRank', 'propertyPrice'];
+
+export const availableBoardArticleSorts = ['createdAt' , 'updateAt', 'articleLikes', 'articleWiews']
 // IMAGE CONFIGURATION
 import { v4 as uuidv4 } from 'uuid';
 import * as path from 'path';
