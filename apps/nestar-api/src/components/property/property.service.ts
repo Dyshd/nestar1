@@ -138,7 +138,7 @@ export class PropertyService {
 
 
 
-   
+
 
     public async updateProperty(memberId: ObjectId, input: PropertyUpdate): Promise<Property> {
         let { propertyStatus, soldAt, deletedAt } = input;
@@ -337,7 +337,7 @@ export class PropertyService {
         return result;
     }
 
-     public async propertyStatsEditor(input: StatisticModifier): Promise<Property> {
+    public async propertyStatsEditor(input: StatisticModifier): Promise<Property> {
         const { _id, targetKey, modifier } = input;
 
         const updated = await this.propertyModel
