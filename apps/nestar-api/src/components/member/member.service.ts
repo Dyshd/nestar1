@@ -11,9 +11,12 @@ import { StatisticModifier, T } from '../../libs/types/common';
 import { ViewService } from '../view/view.service';
 import { ViewInput } from '../../libs/dto/view/view.input';
 import { ViewGroup } from '../../libs/enums/view.enum';
+import { CommentUpdate } from '../../libs/dto/comment/comment.update';
+import { CommentStatus } from '../../libs/enums/comment.enum';
 
 @Injectable()
 export class MemberService {
+    commentModel: any;
     constructor(
         @InjectModel("Member")
         private readonly memberModel: Model<Member>,
@@ -118,7 +121,7 @@ export class MemberService {
                 },
             },
         ]).exec();
-
+        console.log("result:", typeof result[0])
         // Agar result bo‘sh bo‘lsa, bo‘sh list va metaCounter qaytarish
         return (result[0] ?? { list: [], metaCounter: [] }) as Members;
     }
@@ -159,7 +162,7 @@ export class MemberService {
         console.log("executed");
         const { _id, targetKey, modifier } = input;
         return await this.memberModel
-            .findOneAndUpdate(
+            .findByIdAndUpdate(
                 _id,
                 {
                     $inc: { [targetKey]: modifier }
@@ -167,5 +170,23 @@ export class MemberService {
                 { new: true },
             )
             .exec();
+    }
+
+    public async updateComment(memberId: ObjectId, input: CommentUpdate): Promise<Comment> {
+        const { _id } = input;
+        const result = await this.commentModel.findOneAndUpdate(
+            {
+                _id: _id,
+                memberId: memberId,
+                commentStatus: CommentStatus.ACTIVE,
+            },
+            input,
+            {
+                new: true,
+            },
+        );
+
+        if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
+        return result;
     }
 }

@@ -43,3 +43,5 @@ export class Comments {
 	@Field(() => [TotalConter], { nullable: true })
 	metaCounter: TotalConter[];
 }
+
+export { CommentStatus };
