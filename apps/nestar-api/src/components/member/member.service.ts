@@ -134,7 +134,9 @@ export class MemberService {
 
 
     public async likeTargetMember(memberId: ObjectId, likeRefId: ObjectId): Promise<Member> {
-        const target: Member | null = await this.memberModel.findOne({ _id: likeRefId, memberStatus: MemberStatus.ACTIVE }).exec();
+        const target: Member | null = await this.memberModel
+            .findOne({ _id: likeRefId, memberStatus: MemberStatus.ACTIVE })
+            .exec();
         if (!target) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
 
         const input: LikeInput = {
@@ -143,7 +145,6 @@ export class MemberService {
             likeGroup: LikeGroup.MEMBER,
         };
 
-        // LIKE TOGGLE via Like modules
         const modifier: number = await this.likeService.toggleLike(input);
         const result = await this.memberStatusEditor({ _id: likeRefId, targetKey: 'memberLikes', modifier: modifier });
 
