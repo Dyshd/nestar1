@@ -14,6 +14,7 @@ import { shapeIntoMongoObjectId } from '../../libs/config';
 import { LikeService } from '../like/like.service';
 import { LikeGroup } from '../../libs/enums/like.enum';
 import { LikeInput } from '../../libs/dto/like/like.input';
+import { ViewInput } from '../../libs/dto/view/view.input';
 
 @Injectable()
 export class BoardArticleService {
@@ -53,15 +54,39 @@ export class BoardArticleService {
 
         const article = target as BoardArticle;
 
+        // ---- If member is logged in ----
         if (memberId) {
-            const viewInput = { memberId, viewRefId: articleId, viewGroup: ViewGroup.ARTICLE };
+
+            // ----------- VIEW -----------
+            const viewInput: ViewInput = {
+                memberId,
+                viewRefId: articleId,
+                viewGroup: ViewGroup.ARTICLE
+            };
+
             const newView = await this.viewService.recordView(viewInput);
+
             if (newView) {
-                await this.boardArticleStatsEditor({ _id: articleId, targetKey: 'articleViews', modifier: 1 });
+                await this.boardArticleStatsEditor({
+                    _id: articleId,
+                    targetKey: 'articleViews',
+                    modifier: 1,
+                });
+
                 article.articleViews++;
             }
+
+            // ----------- LIKE CHECK -----------
+            const likeInput: LikeInput = {
+                memberId,
+                likeRefId: articleId,
+                likeGroup: LikeGroup.ARTICLE,
+            };
+
+            (article as any).meLiked = await this.likeService.checkLikeExistence(likeInput);
         }
 
+        // ----------- MEMBER DATA LOAD -----------
         article.memberData = await this.memberService.getMember(
             memberId || undefined,
             article.memberId
@@ -69,6 +94,7 @@ export class BoardArticleService {
 
         return article;
     }
+
 
     public async updateBoardArticle(memberId: ObjectId, input: BoardArticleUpdate): Promise<BoardArticle> {
         const { _id, articleStatus } = input;

@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { LikeInput } from '../../libs/dto/like/like.input';
 import { T } from '../../libs/types/common';
 import { Message } from '../../libs/enums/common.enum';
-import { Like } from '../../libs/dto/like/like';
+import { Like, MeLiked } from '../../libs/dto/like/like';
 
 @Injectable()
 export class LikeService {
@@ -27,5 +27,10 @@ export class LikeService {
         }
         console.log(`- Like modifier ${modifier}-`);
         return modifier;
+    }
+    public async checkLikeExistence(input: LikeInput): Promise<MeLiked[]> {
+        const { memberId, likeRefId } = input;
+        const result = await this.likeModel.findOne({ memberId: memberId, likeRefId: likeRefId }).exec();
+        return result ? [{ memberId: memberId, likeRefId: likeRefId, myFavorite: true }] : [];
     }
 }

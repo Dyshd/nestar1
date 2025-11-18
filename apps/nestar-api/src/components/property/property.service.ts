@@ -15,6 +15,7 @@ import { lookupMember, shapeIntoMongoObjectId } from '../../libs/config';
 import { LikeService } from '../like/like.service';
 import { LikeInput } from '../../libs/dto/like/like.input';
 import { LikeGroup } from '../../libs/enums/like.enum';
+import { ViewInput } from '../../libs/dto/view/view.input';
 
 @Injectable()
 export class PropertyService {
@@ -51,22 +52,39 @@ export class PropertyService {
         if (!targetProperty) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
 
         if (memberId) {
-            const viewInput = { memberId: memberId, viewRefId: propertyId, viewGroup: ViewGroup.PROPERTY };
+
+            // ----- VIEW RECORDING -----
+            const viewInput: ViewInput = {
+                memberId: memberId,
+                viewRefId: propertyId,
+                viewGroup: ViewGroup.PROPERTY
+            };
+
             const newView = await this.viewService.recordView(viewInput);
+
             if (newView) {
-                await this.propertyStatsEditor({ _id: propertyId, targetKey: 'propertyViews', modifier: 1 });
+                await this.propertyStatsEditor({
+                    _id: propertyId,
+                    targetKey: 'propertyViews',
+                    modifier: 1
+                });
+
                 targetProperty.propertyViews++;
             }
+
+            // ----- LIKE CHECK -----
+            const likeInput: LikeInput = {
+                memberId: memberId,
+                likeRefId: propertyId,
+                likeGroup: LikeGroup.PROPERTY,
+            };
+
+            (targetProperty as any).meLiked = await this.likeService.checkLikeExistence(likeInput);
         }
 
-        // ✅ endi 2 ta argument beramiz
-        (targetProperty as any).memberData = await this.memberService.getMember(
-            memberId,
-            targetProperty.memberId
-        );
-
-        return targetProperty as Property;
+        return targetProperty;
     }
+
 
 
 
