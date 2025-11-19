@@ -76,7 +76,6 @@ export class Member {
 
     @Field(() => Date, { nullable: true })
     updateAt?: Date;
-    
     @Field(()=> [MeLiked], {nullable: true})
     meLiked?: MeLiked[];
 
