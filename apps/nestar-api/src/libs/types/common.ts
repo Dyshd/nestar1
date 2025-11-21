@@ -9,3 +9,9 @@ export interface StatisticModifier {
     targetKey: string;
     modifier: number;
 }
+
+// 🔹 Qo‘shildi: LookupAuthMemberFollowed tipi
+export interface LookupAuthMemberFollowed {
+    followerId: ObjectId | string;
+    followingId: ObjectId | string;
+}
