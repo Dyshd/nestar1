@@ -6,12 +6,13 @@ import * as mongoose from 'mongoose';
 class FollowSearch {
 	@IsOptional()
 	@Field(() => String, { nullable: true })
-	followingId?: mongoose.ObjectId;
+	followingId?: string;
 
 	@IsOptional()
 	@Field(() => String, { nullable: true })
-	followerId?: mongoose.ObjectId;
+	followerId?: string;
 }
+
 
 @InputType()
 export class FollowInquiry {

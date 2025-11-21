@@ -4,8 +4,8 @@ export const availableAgentSorts = ['createdAt', 'updatedAt', 'memberLikes', 'me
 export const availableMemberSorts = ['createdAt', 'updatedAt', 'memberLikes', 'memberViews']
 export const availableOptions = ['propertyBarter', "propertyRent"];
 export const availablePropertySorts = ['createdAt', 'updatedAt', 'memberLikes', 'memberViews', 'propertyRank', 'propertyPrice'];
-export const availableBoardArticleSorts = ['createdAt' , 'updateAt', 'articleLikes', 'articleWiews']
-export const availableCommentSorts = ['createdAt' , 'updateAt']
+export const availableBoardArticleSorts = ['createdAt', 'updateAt', 'articleLikes', 'articleWiews']
+export const availableCommentSorts = ['createdAt', 'updateAt']
 // IMAGE CONFIGURATION
 import { v4 as uuidv4 } from 'uuid';
 import * as path from 'path';
@@ -27,3 +27,21 @@ export const lookupMember = {
         as: 'memberData',
     }
 }
+
+export const lookupFollowingData = {
+    $lookup: {
+        from: 'members',
+        localField: 'followingId',
+        foreignField: '_id',
+        as: 'followingData',
+    },
+};
+
+export const lookupFollowerData = {
+    $lookup: {
+        from: 'members',
+        localField: 'followerId',
+        foreignField: '_id',
+        as: 'followerData',
+    },
+};
