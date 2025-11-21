@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Member } from '../member/member';
 import { MeLiked } from '../like/like';
-import { TotalConter } from '../member/member';  // ⚠️ TO‘G‘RI IMPORT QIL
+import { TotalConter } from '../member/member'; 
 
 @ObjectType()
 export class MeFollowed {
