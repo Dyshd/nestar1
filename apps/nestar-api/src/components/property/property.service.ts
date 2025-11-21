@@ -11,11 +11,12 @@ import { ViewGroup } from '../../libs/enums/view.enum';
 import { ViewService } from '../view/view.service';
 import { PropertyUpdate } from '../../libs/dto/property/property.update';
 import moment from 'moment';
-import { lookupMember, shapeIntoMongoObjectId } from '../../libs/config';
+import { lookupAuthMemberLiked, lookupMember, shapeIntoMongoObjectId } from '../../libs/config';
 import { LikeService } from '../like/like.service';
 import { LikeInput } from '../../libs/dto/like/like.input';
 import { LikeGroup } from '../../libs/enums/like.enum';
 import { ViewInput } from '../../libs/dto/view/view.input';
+import { lookup } from 'dns';
 
 @Injectable()
 export class PropertyService {
@@ -42,33 +43,27 @@ export class PropertyService {
     }
 
     public async getProperty(memberId: ObjectId, propertyId: ObjectId): Promise<Property> {
-
         const search: T = {
             _id: propertyId,
             propertyStatus: PropertyStatus.ACTIVE,
         };
-
         const targetProperty = await this.propertyModel.findOne(search).lean().exec();
         if (!targetProperty) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
 
         if (memberId) {
-
             // ----- VIEW RECORDING -----
             const viewInput: ViewInput = {
                 memberId: memberId,
                 viewRefId: propertyId,
                 viewGroup: ViewGroup.PROPERTY
             };
-
             const newView = await this.viewService.recordView(viewInput);
-
             if (newView) {
                 await this.propertyStatsEditor({
                     _id: propertyId,
                     targetKey: 'propertyViews',
                     modifier: 1
                 });
-
                 targetProperty.propertyViews++;
             }
 
@@ -78,7 +73,6 @@ export class PropertyService {
                 likeRefId: propertyId,
                 likeGroup: LikeGroup.PROPERTY,
             };
-
             (targetProperty as any).meLiked = await this.likeService.checkLikeExistence(likeInput);
         }
 
@@ -136,6 +130,7 @@ export class PropertyService {
                         list: [
                             { $skip: (input.page - 1) * input.limit },
                             { $limit: input.limit },
+                            lookupAuthMemberLiked(memberId)
                             // meLiked
                             // lookupMember,
                             // sunwind: '$memberData'
