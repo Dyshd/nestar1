@@ -14,22 +14,22 @@ import { LookupAuthMemberFollowed, T } from './types/common'; // 🔹 TO‘G‘R
 export const validMimeTypes = ['image/png', 'image/jpg', 'image/jpeg'];
 
 export const getSerialForImage = (filename: string) => {
-    const ext = path.parse(filename).ext;
-    return uuidv4() + ext; // 🔹 UNIQUE IMAGE NOMINI GENERATE QILISH
+  const ext = path.parse(filename).ext;
+  return uuidv4() + ext; // 🔹 UNIQUE IMAGE NOMINI GENERATE QILISH
 };
 
 export const shapeIntoMongoObjectId = (target: any) => {
-    // 🔹 Agar string kelsa ObjectId ga aylantirish, aks holda o‘sha ObjectId ni qaytaradi
-    return typeof target === 'string' ? new ObjectId(target) : target;
+  // 🔹 Agar string kelsa ObjectId ga aylantirish, aks holda o‘sha ObjectId ni qaytaradi
+  return typeof target === 'string' ? new ObjectId(target) : target;
 };
 
 export const lookupMember = {
-    $lookup: {
-        from: 'members',
-        localField: 'memberId',
-        foreignField: '_id',
-        as: 'memberData',
-    }
+  $lookup: {
+    from: 'members',
+    localField: 'memberId',
+    foreignField: '_id',
+    as: 'memberData',
+  }
 }
 
 // 🔹 MANTIQ O‘ZGARTIRILDI: meLiked uchun aggregate $lookup
@@ -47,7 +47,7 @@ export const lookupAuthMemberLiked = (memberId: T, targetRefId: string = '$_id')
           $match: {
             $expr: {
               $and: [
-                { $eq: ['$likeRefId', '$$localLikeRefId'] }, 
+                { $eq: ['$likeRefId', '$$localLikeRefId'] },
                 { $eq: ['$memberId', '$$localMemberId'] }
               ],
             },
@@ -83,7 +83,7 @@ export const lookupAuthMemberFollowed = (input: LookupAuthMemberFollowed) => { /
           $match: {
             $expr: {
               $and: [
-                { $eq: ['$followerId', '$$localFollowerId'] }, 
+                { $eq: ['$followerId', '$$localFollowerId'] },
                 { $eq: ['$followingId', '$$localFollowingId'] }
               ],
             },
@@ -105,20 +105,33 @@ export const lookupAuthMemberFollowed = (input: LookupAuthMemberFollowed) => { /
 
 // 🔹 FOLLOWING DATA AGGREGATE $LOOKUP
 export const lookupFollowingData = {
-    $lookup: {
-        from: 'members',
-        localField: 'followingId',
-        foreignField: '_id',
-        as: 'followingData', // 🔹 Output field
-    },
+  $lookup: {
+    from: 'members',
+    localField: 'followingId',
+    foreignField: '_id',
+    as: 'followingData', // 🔹 Output field
+  },
 };
 
 // 🔹 FOLLOWER DATA AGGREGATE $LOOKUP
 export const lookupFollowerData = {
-    $lookup: {
-        from: 'members',
-        localField: 'followerId',
-        foreignField: '_id',
-        as: 'followerData', // 🔹 Output field
-    },
+  $lookup: {
+    from: 'members',
+    localField: 'followerId',
+    foreignField: '_id',
+    as: 'followerData', // 🔹 Output field
+  },
+
+
+};
+
+export const lookupFavorite = {
+  $lookup: {
+    from: 'members',
+    localField: 'favoriteProperty.memberId',
+    foreignField: '_id',
+    as: 'favoriteProperty.memberData', // 🔹 Output field
+  },
+
+
 };
