@@ -71,31 +71,35 @@ const MemberSchema = new Schema(
             type: Number,
             default: 0,
         },
-          memberLikes: {
+        memberLikes: {
             type: Number,
             default: 0,
         },
-          memberViews: {
+        memberViews: {
             type: Number,
             default: 0,
         },
-          memberComments: {
+        memberComments: {
             type: Number,
             default: 0,
         },
-          memberRank: {
+        memberArticles: {
             type: Number,
             default: 0,
         },
-          memberWarnings: {
+        memberRank: {
             type: Number,
             default: 0,
         },
-          memberBlocks: {
+        memberWarnings: {
             type: Number,
             default: 0,
         },
-          deletedAt: {
+        memberBlocks: {
+            type: Number,
+            default: 0,
+        },
+        deletedAt: {
             type: Date,
         },
     },

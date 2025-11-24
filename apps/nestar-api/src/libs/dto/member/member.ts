@@ -69,6 +69,9 @@ export class Member {
     @Field(() => Int)
     memberBlocks: number;
 
+    @Field(() => Int)
+    memberArticles: number;
+
     @Field(() => Date, { nullable: true })
     deletedAt?: Date;
 
@@ -98,7 +101,7 @@ export class TotalConter {
 export class Members {
     @Field(() => [Member])
     list: Member[];
-    
+
     @Field(() => [TotalConter], { nullable: true })
     metaCounter: TotalConter[];
 }
