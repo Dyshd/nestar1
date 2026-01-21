@@ -76,7 +76,7 @@ export class Property {
     createdAt?: Date;
 
     @Field(() => Date, { nullable: true })
-    updateAt?: Date;
+    updatedAt?: Date;
 
 
     //Agrigation

@@ -79,7 +79,7 @@ export class Member {
     createdAt?: Date;
 
     @Field(() => Date, { nullable: true })
-    updateAt?: Date;
+    updatedAt?: Date;
     @Field(() => [MeLiked], { nullable: true })
     meLiked?: MeLiked[];
 

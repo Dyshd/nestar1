@@ -97,7 +97,7 @@ import { ViewGroup } from "../../enums/view.enum";
 //     createdAt?: Date;
 
 //     @Field(() => Date, { nullable: true })
-//     updateAt?: Date;
+//      ?: Date;
 
 //     @Field(() => String, {nullable: true})
 //     accessToken?: string;
