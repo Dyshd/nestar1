@@ -42,9 +42,9 @@ export class CommentService {
             },
             { ...input, updatedAt: new Date() },
             { new: true },
-        );
+        ).exec();
 
-        console.log('Service.updateComment result:', result);
+
 
         if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
         return result;
@@ -97,7 +97,7 @@ export class CommentService {
         const { commentRefId } = input.search;
 
         const match: T = {
-            commentRefId: commentRefId,
+            commentRefId,
             commentStatus: CommentStatus.ACTIVE,
         };
 
@@ -114,22 +114,25 @@ export class CommentService {
                         { $skip: (input.page - 1) * input.limit },
                         { $limit: input.limit },
                         lookupMember,
-                        { $unwind: '$memberData' },
+                        { $unwind: { path: '$memberData', preserveNullAndEmptyArrays: true } },
                     ],
                     metaCounter: [{ $count: 'total' }],
                 },
             },
-        ]);
+        ]).exec();
 
-        if (!result.length)
-            throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+        if (!result.length) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+
+        // ixtiyoriy: metaCounter bo‘sh bo‘lsa 0 qilib qaytarish
+        if (!result[0].metaCounter?.length) result[0].metaCounter = [{ total: 0 }];
 
         return result[0];
     }
 
 
+
     public async removeCommentByAdmin(input: ObjectId): Promise<Comment> {
-        const result = await this.commentModel.findByIdAndDelete(input);
+        const result = await this.commentModel.findByIdAndDelete(input).exec();
         if (!result) throw new InternalServerErrorException(Message.REMOVE_FAILED);
         return result;
     }

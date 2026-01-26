@@ -44,7 +44,7 @@ export class PropertyResolver {
 
     @Roles(MemberType.AGENT)
     @UseGuards(RolesGuard)
-    @Query((returns) => Property)
+    @Mutation(() => Property)
     public async updateProperty(
         @Args('input') input: PropertyUpdate,
         @AuthMember('_id') memberId: mongoose.ObjectId,
@@ -54,8 +54,9 @@ export class PropertyResolver {
         return await this.propertyService.updateProperty(memberId, input);
     }
 
+
     @UseGuards(WithoutGuard)
-    @Query((returns) => Properties)
+    @Query(() => Properties)
     public async getProperties(
         @Args('input') input: PropertiesInquiry,
         @AuthMember('_id') memberId: mongoose.ObjectId,
